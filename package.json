@@ -1,0 +1,29 @@
+{
+  "name": "$NAME",
+  "description": "$DESCRIPTION",
+  "version": "0.0.0",
+  "dependencies": {},
+  "scripts": {
+    "lint": "xo --esnext --space",
+    "inspect": "jsinspect",
+    "pretest": "npm run lint && npm run inspect",
+    "test": "ava",
+    "test-cov": "nyc ava",
+    "posttest-cov": ""
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "author": "Jordan Klassen <forivall@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^0.11.0",
+    "jsinspect": "^0.7.0",
+    "nyc": "^5.5.0",
+    "xo": "^0.12.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:forivall/errmsg.git"
+  }
+}
