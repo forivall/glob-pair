@@ -1,0 +1,11 @@
+/node_modules
+/coverage
+*.log
+*.cache
+/src
+/test
+/.editorconfig
+/.eslintconfig
+/.jsinspectrc
+/.tern-project
+/.travis.yml
