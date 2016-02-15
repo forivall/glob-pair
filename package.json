@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "dependencies": {},
   "scripts": {
-    "lint": "xo --esnext --space",
+    "lint": "xo --ignore test/**",
     "inspect": "jsinspect",
     "pretest": "npm run lint && npm run inspect",
     "test": "ava",
@@ -25,5 +25,29 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:forivall/errmsg.git"
+  },
+  "xo": {
+    "space": 2,
+    "rules": {
+      "curly": [
+        2,
+        "multi-line",
+        "consistent"
+      ],
+      "brace-style": [
+        2,
+        "1tbs",
+        {
+          "allowSingleLine": true
+        }
+      ]
+    },
+    "overrides": [
+      {
+        "files": "test/**",
+        "esnext": true,
+        "semicolon": false
+      }
+    ]
   }
 }
