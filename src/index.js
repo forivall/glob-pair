@@ -19,9 +19,9 @@ import glob from 'glob';
 import globCommon from 'glob/common';
 const {Glob} = glob;
 import isGlob from 'is-glob';
-import forEach from 'lodash/forEach';
-import map from 'lodash/map';
-import isArray from 'lodash/isArray';
+import forEach from 'lodash.foreach';
+import map from 'lodash.map';
+import isArray from 'lodash.isarray';
 
 function ownProp(obj, field) {
   return Object.prototype.hasOwnProperty.call(obj, field);
@@ -63,8 +63,6 @@ export class Walker {
     this.root = opts.root ? path.resolve(opts.root) : path.resolve(this.cwd, '/');
     if (process.platform === 'win32') this.root = this.root.replace(/\\/g, '/');
 
-    this._pending = 0;
-
     this.nextGlobId = 0;
     this.pendingGlobs = Object.create(null);
 
@@ -79,7 +77,7 @@ export class Walker {
   }
 
   walk({src: globs, dest: dests}) {
-    if (this._pending > 0) throw new Error('Not reentrant');
+    if (this._asyncBlock._getPending() > 0) throw new Error('Not reentrant');
 
     const hasDest = Boolean(dests);
     const oneDest = hasDest && dests.length === 1;
@@ -101,6 +99,8 @@ export class Walker {
     opts.cache = this.globCache;
     opts.statCache = this.statCache;
     opts.symlinks = this.symlinks;
+    opts.cwd = this.cwd;
+    opts.root = this.root;
     return opts;
   }
 

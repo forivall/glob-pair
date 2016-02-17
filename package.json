@@ -1,8 +1,16 @@
 {
   "name": "glob-pair",
-  "description": "$DESCRIPTION",
+  "description": "Create source to destination mappings from globs",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "asyncaphore": "^1.1.0",
+    "babel-runtime": "^6.5.0",
+    "glob": "^7.0.0",
+    "is-glob": "^2.0.1",
+    "lodash.foreach": "^4.1.0",
+    "lodash.isarray": "^4.0.0",
+    "lodash.map": "^4.2.0"
+  },
   "scripts": {
     "lint": "xo src/**",
     "build": "babel src -d lib",
@@ -23,6 +31,8 @@
   "devDependencies": {
     "ava": "^0.11.0",
     "babel-cli": "^6.5.1",
+    "babel-plugin-external-helpers": "^6.5.0",
+    "babel-plugin-transform-runtime": "^6.5.2",
     "babel-preset-es2015": "^6.5.0",
     "jsinspect": "^0.7.0",
     "nyc": "^5.5.0",
@@ -33,7 +43,12 @@
     "url": "git@github.com:forivall/errmsg.git"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
   },
   "xo": {
     "space": 2,
