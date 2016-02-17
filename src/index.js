@@ -1,20 +1,16 @@
 
-// TODO: export to external module
-//       when i do, add option to not fully traverse into a directory,
-//       and option to not traverse into symlinks
-//
-// TODO: UNIT TESTS!!! ROBUST CONTRACTS W.R.T. INPUT AND OUTPUT
-
-// tries to match globs with a target destination, so things like
-// {src: ['packages/*/src'], dest: ['dist']} are possible.
-//
-// eventually, something like
-//
-// {src: ['packages/*/src/*'], dest: ['packages/*/lib']}
-//
-// should be possible.
-//
-// For now, something like `scripts/_get-test-directories.sh` can be used for this multi src-dest purpose.
+/*
+ * tries to match globs with a target destination, so things like
+ * `{src: ['packages/*\/src'], dest: ['dist']}` are possible.
+ *
+ * eventually, something like
+ *
+ * `{src: ['packages/*\/src/*'], dest: ['packages/*\/lib']}`
+ *
+ * should be possible.
+ *
+ * For now, something like `scripts/_get-test-directories.sh` can be used for this multi src-dest purpose.
+ */
 
 import path from 'path';
 
