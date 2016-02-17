@@ -2,13 +2,13 @@
 
 $DESCRIPTION
 
-[![build status](https://secure.travis-ci.org/forivall/errmsg.svg)](http://travis-ci.org/forivall/errmsg)
-[![dependency status](https://david-dm.org/forivall/errmsg.svg)](https://david-dm.org/forivall/errmsg)
+[![build status](https://secure.travis-ci.org/forivall/$NAME.svg)](http://travis-ci.org/forivall/$NAME)
+[![dependency status](https://david-dm.org/forivall/$NAME.svg)](https://david-dm.org/forivall/$NAME)
 
 ## Installation
 
 ```
-npm install --save errmsg
+npm install --save $NAME
 ```
 
 ## Usage
