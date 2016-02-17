@@ -27,7 +27,7 @@ function ownProp(obj, field) {
   return Object.prototype.hasOwnProperty.call(obj, field);
 }
 
-export default function walk(args: Object, eachCb, cb) {
+export default function walk(args, eachCb, cb) {
   return new Walker(args, eachCb, cb).walk(args);
 }
 
