@@ -16,20 +16,19 @@
 //
 // For now, something like `scripts/_get-test-directories.sh` can be used for this multi src-dest purpose.
 
+import path from 'path';
 
-import path from "path";
-
-import asyncaphore from "asyncaphore";
-import glob from "glob";
-import globCommon from "glob/common";
+import asyncaphore from 'asyncaphore';
+import glob from 'glob';
+import globCommon from 'glob/common';
 const {Glob} = glob;
-import isGlob from "is-glob";
-import forEach from "lodash/forEach";
-import map from "lodash/map";
-import isArray from "lodash/isArray";
+import isGlob from 'is-glob';
+import forEach from 'lodash/forEach';
+import map from 'lodash/map';
+import isArray from 'lodash/isArray';
 
-function ownProp (obj, field) {
-  return Object.prototype.hasOwnProperty.call(obj, field)
+function ownProp(obj, field) {
+  return Object.prototype.hasOwnProperty.call(obj, field);
 }
 
 export default function walk(args: Object, eachCb, cb) {
@@ -58,15 +57,15 @@ export class Walker {
     // cwd & root logic borrowed from glob, used in makeAbs
     this.changedCwd = false;
     const cwd = process.cwd();
-    if (!ownProp(opts, "cwd"))
-      this.cwd = cwd;
-    else {
+    if (ownProp(opts, 'cwd')) {
       this.cwd = path.resolve(opts.cwd);
       this.changedCwd = this.cwd !== cwd;
+    } else {
+      this.cwd = cwd;
     }
 
-    this.root = opts.root ? path.resolve(opts.root) : path.resolve(this.cwd, "/");
-    if (process.platform === "win32") this.root = this.root.replace(/\\/g, "/")
+    this.root = opts.root ? path.resolve(opts.root) : path.resolve(this.cwd, '/');
+    if (process.platform === 'win32') this.root = this.root.replace(/\\/g, '/');
 
     this._pending = 0;
 
@@ -84,9 +83,9 @@ export class Walker {
   }
 
   walk({src: globs, dest: dests}) {
-    if (this._pending > 0) throw new Error("Not reentrant");
+    if (this._pending > 0) throw new Error('Not reentrant');
 
-    const hasDest = !!dests;
+    const hasDest = Boolean(dests);
     const oneDest = hasDest && dests.length === 1;
     // assert oneDest || dests.length === globs.length
     for (let i = 0, len = globs.length; i < len; i++) {
@@ -118,20 +117,23 @@ export class Walker {
     this.retain();
     this.pendingGlobs[globberId] = new Glob(globPat, this._globOpts({stat: true}), (err, matches) => {
       if (this.aborted) return;
-      if (err) return this.abort(err);
+      if (err) {
+        this.abort(err);
+        return;
+      }
 
       this.pendingGlobs[globberId] = undefined;
-      this.walkPaths(matches, dests, globPat.slice(-1) !== "*");
+      this.walkPaths(matches, dests, globPat.slice(-1) !== '*');
       this.release();
     });
   }
 
   walkPaths(paths, dests, direct) {
-    const hasDest = !!dests;
+    const hasDest = Boolean(dests);
     const oneDest = hasDest && dests.length === 1;
     // assert oneDest || dests.length === paths.length
     for (let i = 0, len = paths.length; i < len; i++) {
-      const src = paths[i]
+      const src = paths[i];
       const dest = hasDest && (oneDest ? path.join(dests[0], path.basename(src)) : dests[i]);
       this.walkPath(src, dest, direct);
     }
@@ -147,7 +149,10 @@ export class Walker {
     this.retain();
     this.pendingGlobs[globberId] = new Glob(src, this._globOpts({stat: true}), (err) => {
       if (this.aborted) return;
-      if (err) return this.abort(err);
+      if (err) {
+        this.abort(err);
+        return;
+      }
 
       this.pendingGlobs[globberId] = undefined;
       this.walkPath(src, dest, true);
@@ -163,12 +168,15 @@ export class Walker {
 
     const cacheItem = this.globCache[cacheKey];
 
-    if (cacheItem === "DIR" || isArray(cacheItem)) {
+    if (cacheItem === 'DIR' || isArray(cacheItem)) {
       const globberId = this.nextGlobId++;
       this.retain();
-      this.pendingGlobs[globberId] = new Glob(src + "/**", this._globOpts(), (err, matches) => {
+      this.pendingGlobs[globberId] = new Glob(src + '/**', this._globOpts(), (err, matches) => {
         if (this.aborted) return;
-        if (err) return this.abort(err);
+        if (err) {
+          this.abort(err);
+          return;
+        }
 
         this.pendingGlobs[globberId] = undefined;
 
@@ -191,7 +199,7 @@ export class Walker {
 
   abort(err) {
     this.aborted = true;
-    forEach(this.pendingGlobs, (globber) => { globber && globber.abort(); });
+    forEach(this.pendingGlobs, (globber) => { if (globber) globber.abort(); });
     this.pendingGlobs = Object.create(null);
     this._asyncBlock.error(err);
   }
@@ -205,7 +213,7 @@ export class Walker {
 
   removeLeadingParentDirs(dest) {
     const normDest = path.normalize(dest);
-    const i = normDest.lastIndexOf("../");
+    const i = normDest.lastIndexOf('../');
     return i >= 0 ? normDest.slice(i + 3) : dest;
   }
 }
