@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "dependencies": {},
   "scripts": {
-    "lint": "xo src",
+    "lint": "xo src/**",
     "build": "babel src -d lib",
     "dev-watch": "babel src -d lib -s -w",
     "inspect": "jsinspect",
