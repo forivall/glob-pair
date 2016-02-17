@@ -104,6 +104,21 @@ test.cb('dir into', t => {
   })
 })
 
+test.cb('multi', t => {
+  t.plan(5)
+  const expected = {
+    'src/index.jsx': 'lib/index.js',
+    'src/foo/bar.jsx': 'lib/foo/bar.js'
+  }
+  globPair({src: ['src/*.jsx', 'src/foo/*.jsx'], dest: ['lib', 'lib/foo'], destExt: '.js'}, (src, dest) => {
+    t.ok(src in expected)
+    t.is(dest, expected[src])
+  }, (err) => {
+    t.notOk(err)
+    t.end()
+  })
+})
+
 test.cb('default opts', t => {
   t.plan(3)
   let w = new Walker((src, dest) => {
@@ -134,25 +149,6 @@ test.serial.cb('root opt', t => {
   globPair({root: 'fixtures', src: ['a.scss'], dest: ['a.css']}, (src, dest) => {
     t.is(src, 'a.scss')
     t.is(dest, 'a.css')
-  }, (err) => {
-    t.notOk(err)
-    t.end()
-  })
-})
-
-test.serial.skip.cb('dir into', t => {
-  test.before(() => {
-    process.chdir(__dirname + "/fixtures")
-  })
-
-  t.plan(5)
-  const expected = {
-    'src/index.jsx': 'lib/index.js',
-    'src/foo/bar.jsx': 'lib/foo/bar.js'
-  }
-  globPair({src: ['src/*'], dest: ['lib'], destExt: '.js'}, (src, dest) => {
-    t.ok(src in expected)
-    t.is(dest, expected[src])
   }, (err) => {
     t.notOk(err)
     t.end()
