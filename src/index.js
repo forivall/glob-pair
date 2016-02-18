@@ -13,6 +13,8 @@
  */
 
 import path from 'path';
+const pathFormat = path.format || require('path-format');
+const pathParse = path.parse || require('path-parse');
 
 import asyncaphore from 'asyncaphore';
 import glob from 'glob';
@@ -202,9 +204,9 @@ export class Walker {
 
   replaceExt(dest) {
     if (!this.destExt) return dest;
-    const p = path.parse(dest);
+    const p = pathParse(dest);
     p.base = path.basename(p.base, p.ext) + this.destExt;
-    return path.format(p);
+    return pathFormat(p);
   }
 
   removeLeadingParentDirs(dest) {

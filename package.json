@@ -80,5 +80,9 @@
         "semicolon": false
       }
     ]
+  },
+  "optionalDependencies": {
+    "path-format": "^1.2.1",
+    "path-parse": "^1.0.5"
   }
 }
