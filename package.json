@@ -15,6 +15,7 @@
   "scripts": {
     "lint": "xo src/**",
     "build": "babel src -d lib",
+    "watch": "babel src -d lib -w",
     "dev-watch": "babel src -d lib -s -w",
     "inspect": "jsinspect",
     "pretest": "npm run lint && npm run inspect",
