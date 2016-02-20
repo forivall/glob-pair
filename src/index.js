@@ -180,7 +180,9 @@ export class Walker {
 
         this.pendingGlobs[globberId] = undefined;
 
-        if (direct) {
+        if (dest === false) {
+          this.walkPaths(matches, false);
+        } else if (direct) {
           const dests = map(matches, (match) => path.join(dest, this.removeLeadingParentDirs(match)));
 
           this.walkPaths(matches, dests);
@@ -192,6 +194,8 @@ export class Walker {
         }
         this.release();
       });
+    } else if (dest === false) {
+      (0, this.eachCb)(src);
     } else {
       (0, this.eachCb)(src, this.replaceExt(dest));
     }

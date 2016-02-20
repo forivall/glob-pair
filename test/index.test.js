@@ -119,6 +119,25 @@ test.cb('multi', t => {
   })
 })
 
+test.cb('empty dest dir', t => {
+  t.plan(5)
+  const expected = {
+    'src/index.jsx': true,
+    'src/foo/bar.jsx': true
+  }
+  globPair(
+    {src: ['src'], dest: false, destExt: '.js'},
+    (src, dest) => {
+      t.ok(src in expected)
+      t.is(dest, undefined)
+    },
+    (err) => {
+      t.notOk(err)
+      t.end()
+    }
+  );
+})
+
 test.serial.cb('leading parent dir', t => {
   process.chdir(__dirname + '/fixtures/src');
   t.plan(3)
