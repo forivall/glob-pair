@@ -46,7 +46,10 @@ export function destOne(src, {src: srcGlob, dest: destGlob, destExt}) {
 
   const set = srcMm.set;
 
-  for (const pattern of set) {
+  // for (const pattern of set) {
+  for (let i = 0, setLen = set.length; i < setLen; i++) {
+    const pattern = set[i];
+
     if (destGlob === '.') {
       if (srcMm.matchOne(srcParts, pattern) ||
           srcMm.matchOne(srcParts, pattern.concat(minimatch.GLOBSTAR))) {
