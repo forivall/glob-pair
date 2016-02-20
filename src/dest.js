@@ -32,7 +32,7 @@ export function destOne(src, {src: srcGlob, dest: destGlob, destExt}) {
 
   if (srcMm.comment) return false;
   if (srcMm.negate) {
-    if (srcMm.match(src)) return path.join(destGlob, replaceExt(srcGlob, destExt));
+    if (srcMm.match(src)) return path.join(destGlob, replaceExt(src, destExt));
     return false;
   }
   if (srcMm.empty) return path.join(destGlob, replaceExt(srcGlob, destExt));

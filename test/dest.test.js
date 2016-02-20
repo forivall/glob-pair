@@ -42,3 +42,13 @@ test('multi', t => {
   t.is(globDest('src/index.jsx', pat), 'lib/index.js',)
   t.is(globDest('src/foo/bar.jsx', pat), 'lib/foo/bar.js')
 })
+
+test('fail', t => {
+  const pat = {src: ['foo'], dest: ['.'], destExt: '.js'}
+  t.is(globDest('src/index.jsx', pat), false)
+})
+
+test('neg', t => {
+  const pat = {src: ['!foo'], dest: ['.'], destExt: '.js'}
+  t.is(globDest('src/index.jsx', pat), 'src/index.js')
+})
