@@ -119,6 +119,30 @@ test.cb('multi', t => {
   })
 })
 
+test.serial.cb('leading parent dir', t => {
+  process.chdir(__dirname + '/fixtures/src');
+  t.plan(3)
+  globPair({src: ['../lib'], dest: ['dist']}, (src, dest) => {
+    t.is(src, '../lib/index.js')
+    t.is(dest, 'dist/lib/index.js')
+  }, (err) => {
+    t.notOk(err)
+    t.end()
+  })
+})
+
+test.serial.cb('leading parent dirs', t => {
+  process.chdir(__dirname + '/fixtures/src/foo');
+  t.plan(3)
+  globPair({src: ['../../lib'], dest: ['dist']}, (src, dest) => {
+    t.is(src, '../../lib/index.js')
+    t.is(dest, 'dist/lib/index.js')
+  }, (err) => {
+    t.notOk(err)
+    t.end()
+  })
+})
+
 test.cb('default opts', t => {
   t.plan(3)
   let w = new Walker((src, dest) => {

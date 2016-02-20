@@ -43,6 +43,15 @@ test('multi', t => {
   t.is(globDest('src/foo/bar.jsx', pat), 'lib/foo/bar.js')
 })
 
+test('leading parent dir', t => {
+  t.is(globDest('../lib/index.js', {src: ['../lib'], dest: ['dist']}), 'dist/lib/index.js')
+})
+
+test('leading parent dirs', t => {
+  t.is(globDest('../../lib/index.js', {src: ['../../lib'], dest: ['dist']}), 'dist/lib/index.js')
+})
+
+
 test('fail', t => {
   const pat = {src: ['foo'], dest: ['.'], destExt: '.js'}
   t.is(globDest('src/index.jsx', pat), false)
