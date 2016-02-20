@@ -23,7 +23,7 @@
     "test-cov": "nyc -r text -r lcov ava",
     "posttest-cov": "echo 'View results with `npm run test-cov-results`.'",
     "test-cov-results": "(sleep 1; python3 -m webbrowser -t http://127.0.0.1:8123) & (cd coverage/lcov-report && python3 -m http.server 8123 -b 127.0.0.1)",
-    "preversion": "npm run build && npm run lint && npm run test"
+    "preversion": "npm run build && npm run test"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
