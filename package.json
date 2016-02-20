@@ -1,7 +1,7 @@
 {
   "name": "glob-pair",
   "description": "Create source to destination mappings from globs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "dependencies": {
     "asyncaphore": "^1.1.0",
     "babel-runtime": "^6.5.0",
