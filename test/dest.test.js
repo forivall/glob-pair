@@ -52,3 +52,18 @@ test('neg', t => {
   const pat = {src: ['!foo'], dest: ['.'], destExt: '.js'}
   t.is(globDest('src/index.jsx', pat), 'src/index.js')
 })
+
+test('neg fail', t => {
+  const pat = {src: ['!index.jsx'], dest: ['.']}
+  t.is(globDest('index.jsx', pat), false)
+})
+
+test('comment', t => {
+  const pat = {src: ['#foo'], dest: ['.']}
+  t.is(globDest('src/index.jsx', pat), false)
+})
+
+test('empty', t => {
+  const pat = {src: [''], dest: ['.'], destExt: '.js'}
+  t.is(globDest('src/index.jsx', pat), 'src/index.js')
+})
