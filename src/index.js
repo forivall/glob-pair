@@ -31,24 +31,30 @@ function ownProp(obj, field) {
   return Object.prototype.hasOwnProperty.call(obj, field);
 }
 
-export default function walk(args, eachCb, cb) {
+export default function run(args, cb) {
+  new Walker({collect: true, ...args}, null, cb).walk(args);
+}
+
+export function walk(args, eachCb, cb) {
   return new Walker(args, eachCb, cb).walk(args);
 }
 
 // it's a zombie! run!
 export class Walker {
-  constructor(...args) {
-    this.cb = args.pop();
-    this.eachCb = args.pop();
-    const opts = args[0] || {};
+  constructor(opts, eachCb, cb) {
+    this.cb = cb;
+    this.eachCb = eachCb;
 
     this.destExt = opts.destExt;
+
+    this.collect = Boolean(opts.collect);
 
     this._asyncBlock = asyncaphore((err) => {
       if (err) {
         if (!this.aborted) this.abort();
         return (0, this.cb)(err);
       }
+      if (this.collect) return (0, this.cb)(null, this._results);
       return (0, this.cb)();
     });
     this.retain = this._asyncBlock.retain;
@@ -82,6 +88,8 @@ export class Walker {
 
   walk({src: globs, dest: dests}) {
     if (this._asyncBlock._getPending() > 0) throw new Error('Not reentrant');
+
+    if (this.collect) this._results = [];
 
     const hasDest = Boolean(dests);
     const oneDest = hasDest && dests.length === 1;
@@ -195,9 +203,12 @@ export class Walker {
         this.release();
       });
     } else if (dest === false) {
-      (0, this.eachCb)(src);
+      if (this.eachCb) (0, this.eachCb)(src);
+      if (this.collect) this._results.push({src});
     } else {
-      (0, this.eachCb)(src, this.replaceExt(dest));
+      dest = this.replaceExt(dest);
+      if (this.eachCb) (0, this.eachCb)(src, dest);
+      if (this.collect) this._results.push({src, dest});
     }
   }
 

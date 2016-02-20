@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import globPair, {Walker} from '../index'
+import globPairs, {Walker, walk as globPair} from '../index'
 
 const origDir = process.cwd()
 
@@ -119,6 +119,44 @@ test.cb('multi', t => {
   })
 })
 
+test.cb('collect', t => {
+  t.plan(5)
+  const expected = {
+    'src/index.jsx': 'lib/index.js',
+    'src/foo/bar.jsx': 'lib/foo/bar.js'
+  }
+  globPairs(
+    {src: ['src/*.jsx', 'src/foo/*.jsx'], dest: ['lib', 'lib/foo'], destExt: '.js'},
+    (err, results) => {
+      t.notOk(err)
+      for (let {src, dest} of results) {
+        t.ok(src in expected)
+        t.is(dest, expected[src])
+      }
+      t.end()
+    }
+  );
+})
+
+test.cb('empty dest', t => {
+  t.plan(5)
+  const expected = {
+    'src/index.jsx': true,
+    'src/foo/bar.jsx': true
+  }
+  globPairs(
+    {src: ['src/*.jsx', 'src/foo/*.jsx'], dest: false, destExt: '.js'},
+    (err, results) => {
+      t.notOk(err)
+      for (let result of results) {
+        t.ok(result.src in expected)
+        t.notOk("dest" in result)
+      }
+      t.end()
+    }
+  );
+})
+
 test.cb('empty dest dir', t => {
   t.plan(5)
   const expected = {
@@ -162,18 +200,6 @@ test.serial.cb('leading parent dirs', t => {
   })
 })
 
-test.cb('default opts', t => {
-  t.plan(3)
-  let w = new Walker((src, dest) => {
-    t.is(src, 'a.scss')
-    t.is(dest, 'a.css')
-  }, (err) => {
-    t.notOk(err)
-    t.end()
-  })
-  w.walk({src: ['a.scss'], dest: ['a.css']})
-})
-
 test.serial.cb('cwd opt', t => {
   process.chdir(__dirname)
   t.plan(3)
@@ -201,7 +227,7 @@ test.serial.cb('root opt', t => {
 test.cb('reentrant err', t => {
   t.plan(1)
   let n = 0;
-  let w = new Walker((src, dest) => {
+  let w = new Walker({}, (src, dest) => {
   }, (err) => {
     n++
     if (n === 2) t.end()

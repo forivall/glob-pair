@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import globDest from '../lib/dest'
+import {dest as globDest} from '../index'
 
 
 test('one file', t => {
