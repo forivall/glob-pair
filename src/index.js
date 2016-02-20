@@ -12,9 +12,9 @@
  * For now, something like `scripts/_get-test-directories.sh` can be used for this multi src-dest purpose.
  */
 
+export {default as dest} from './dest';
+
 import path from 'path';
-const pathFormat = path.format || require('path-format');
-const pathParse = path.parse || require('path-parse');
 
 import asyncaphore from 'asyncaphore';
 import glob from 'glob';
@@ -24,6 +24,8 @@ import isGlob from 'is-glob';
 import forEach from 'lodash.foreach';
 import map from 'lodash.map';
 import isArray from 'lodash.isarray';
+
+import {replaceExt} from './common';
 
 function ownProp(obj, field) {
   return Object.prototype.hasOwnProperty.call(obj, field);
@@ -203,10 +205,7 @@ export class Walker {
   }
 
   replaceExt(dest) {
-    if (!this.destExt) return dest;
-    const p = pathParse(dest);
-    p.base = path.basename(p.base, p.ext) + this.destExt;
-    return pathFormat(p);
+    return replaceExt(dest, this.destExt);
   }
 
   removeLeadingParentDirs(dest) {

@@ -89,7 +89,7 @@ test.cb('dir into', t => {
   })
 })
 
-test.cb('dir into', t => {
+test.cb('dir into 2', t => {
   t.plan(5)
   const expected = {
     'src/index.jsx': 'lib/index.js',
