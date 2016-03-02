@@ -37,6 +37,11 @@ test('dir into 2', t => {
   t.is(globDest('src/foo/bar.jsx', pat), 'lib/foo/bar.js')
 })
 
+test('dir into self', t => {
+  const pat = {src: ['./src/*'], dest: ['./src'], destExt: '.js'}
+  t.is(globDest('src/index.jsx', pat), 'src/index.js',)
+})
+
 test('multi', t => {
   const pat = {src: ['src/*.jsx', 'src/foo/*.jsx'], dest: ['lib', 'lib/foo'], destExt: '.js'}
   t.is(globDest('src/index.jsx', pat), 'lib/index.js',)

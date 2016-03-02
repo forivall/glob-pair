@@ -4,6 +4,7 @@ import path from 'path';
 import isGlob from 'is-glob';
 import minimatch from 'minimatch';
 const {Minimatch} = minimatch;
+import pathIsAbsolute from 'path-is-absolute';
 
 import {replaceExt} from './common';
 
@@ -43,13 +44,20 @@ export function destOne(src, {src: srcGlob, dest: destGlob, destExt}) {
     src = src.split(path.sep).join('/');
   }
 
-  const srcParts = src.split(slashSplit);
+  const srcPartsOrig = src.split(slashSplit);
+  const isAbs = pathIsAbsolute(src);
 
   const set = srcMm.set;
 
   // for (const pattern of set) {
   for (let i = 0, setLen = set.length; i < setLen; i++) {
     const pattern = set[i];
+
+    let srcParts = srcPartsOrig;
+    // if glob starts with "./", and src is relative, add it on
+    if (!isAbs && pattern[0] === "." && srcParts[0] !== ".") {
+      srcParts = ["."].concat(srcParts);
+    }
 
     if (destGlob === '.') {
       if (srcMm.matchOne(srcParts, pattern) ||
