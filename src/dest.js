@@ -54,9 +54,9 @@ export function destOne(src, {src: srcGlob, dest: destGlob, destExt}) {
     const pattern = set[i];
 
     let srcParts = srcPartsOrig;
-    // if glob starts with "./", and src is relative, add it on
-    if (!isAbs && pattern[0] === "." && srcParts[0] !== ".") {
-      srcParts = ["."].concat(srcParts);
+    // if glob starts with './', and src is relative, add it on
+    if (!isAbs && pattern[0] === '.' && srcParts[0] !== '.') {
+      srcParts = ['.'].concat(srcParts);
     }
 
     if (destGlob === '.') {
